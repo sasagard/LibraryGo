@@ -2,16 +2,29 @@ package main
 
 import (
 	"AppLibrary/library"
-	"fmt"
 )
 
 func main() {
 
-	book := library.Book{Title: "El economista callejero", Author: "Axel Kaiser", Year: 2021}
-	library.AddBook(book)
-	book2 := library.Book{Title: "El Odio a los Ricos", Author: "Axel Kaiser y Rainer Zitelmann", Year: 2023}
-	library.AddBook(book2)
+	printedBook := library.PrintedBook{
+		Book: library.Book{
+			Title:  "The Great Gatsby",
+			Author: "F. Scott Fitzgerald",
+			Year:   1925,
+		},
+		Pages: 180,
+	}
+	eBook := library.Ebook{
+		Book: library.Book{
+			Title:  "The Catcher in the Rye",
+			Author: "J. D. Salinger",
+			Year:   1951,
+		},
+		FileSizeMB: 500,
+	}
 
-	fmt.Println("Libros en la libreria:")
-	library.ListBooks()
+	library.AddItem(printedBook)
+	library.AddItem(eBook)
+
+	library.ListItems()
 }
