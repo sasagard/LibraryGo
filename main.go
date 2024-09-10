@@ -2,10 +2,12 @@ package main
 
 import (
 	"AppLibrary/library"
+	"fmt"
 )
 
 func main() {
 
+	fmt.Println("Agregando elementos a biblioteca")
 	printedBook := library.PrintedBook{
 		Book: library.Book{
 			Title:  "The Great Gatsby",

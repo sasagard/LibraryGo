@@ -1,42 +1,53 @@
 package library
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"go.mongodb.org/mongo-driver/bson"
+
+	database "AppLibrary/db"
+)
 
 // Interfaz para representar elementos de la biblioteca
 type LibraryItem interface {
 	GetDetails() string
 }
 
-// Estructura de PrintedBook
-type PrintedBook struct {
-	Book
-	Pages int
-}
-
-// Estructura de Ebook
-type Ebook struct {
-	Book
-	FileSizeMB int
-}
-
-// Funcion para obtener los detalles de PrintedBook
-func (pb PrintedBook) GetDetails() string {
-	return fmt.Sprintf("%s (%d) - Autor: %s - Pag: %d", pb.Title, pb.Year, pb.Author, pb.Pages)
-}
-
-// Funcion para obtener los detalles de Ebook
-func (eb Ebook) GetDetails() string {
-	return fmt.Sprintf("%s (%d) - Autor: %s - Tamaño: %d MB", eb.Title, eb.Year, eb.Author, eb.FileSizeMB)
-}
-
 var items []LibraryItem
 
 func AddItem(item LibraryItem) {
-	items = append(items, item)
+	var doc interface{}
+	switch v := item.(type) {
+	case PrintedBook:
+		doc = v
+	case Ebook:
+		doc = v
+	default:
+		fmt.Println("No se acepta este tipo de elemento: %T", v)
+	}
+
+	_, err := database.Collection.InsertOne(context.TODO(), doc)
+	if err != nil {
+		items = append(items, item)
+	}
 }
 
 func ListItems() {
-	for _, item := range items {
-		fmt.Println(item.GetDetails())
+
+	cursor, err := database.Collection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer cursor.Close(context.TODO())
+
+	for cursor.Next(context.TODO()) {
+		var result bson.M
+		err := cursor.Decode(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(result)
 	}
 }
