@@ -51,3 +51,50 @@ func ListItems() {
 		fmt.Println(result)
 	}
 }
+
+func CreatePrintedBook() PrintedBook {
+
+	var title, author string
+	var year, pages int
+
+	fmt.Print("Ingrese Title: ")
+	fmt.Scanln(&title)
+	fmt.Print("Ingrese Autor: ")
+	fmt.Scanln(&author)
+	fmt.Print("Ingrese Año de publicación: ")
+	fmt.Scanln(&year)
+	fmt.Print("Ingrese numero de páginas: ")
+	fmt.Scanln(&pages)
+
+	return PrintedBook{
+		Book: Book{
+			Title:  title,
+			Author: author,
+			Year:   year,
+		},
+		Pages: pages,
+	}
+}
+
+func CreateEbook() Ebook {
+	var title, author string
+	var year, fileSizeMB int
+
+	fmt.Print("Ingrese Title: ")
+	fmt.Scanln(&title)
+	fmt.Print("Ingrese Autor: ")
+	fmt.Scanln(&author)
+	fmt.Print("Ingrese Año de publicación: ")
+	fmt.Scanln(&year)
+	fmt.Print("Ingrese Tamaño en MB: ")
+	fmt.Scanln(&fileSizeMB)
+
+	return Ebook{
+		Book: Book{
+			Title:  title,
+			Author: author,
+			Year:   year,
+		},
+		FileSizeMB: fileSizeMB,
+	}
+}
